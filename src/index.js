@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./connection')
-const contentFile = require('./data/content.json');
+const db = require('../connection')
+const contentFile = require('../data/content.json');
 
 const app = express();
 const port = 3000;

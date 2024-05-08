@@ -4,7 +4,7 @@
   "description": "api with node js",
   "main": "index.js",
   "scripts": {
-    "api-service": "nodemon index.js"
+    "api-service": "nodemon ./src/index.js"
   },
   "author": "",
   "license": "MIT",
