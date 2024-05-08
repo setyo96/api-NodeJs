@@ -1,0 +1,14 @@
+{
+    "content_array": [
+        {
+            "pageName": "home",
+            "key": "title-homepage",
+            "content": "Setyo Nugroho Wibowo"
+        },
+        {
+            "pageName": "home",
+            "key": "description-homepage",
+            "content": "Meticulous Quality Assurance Engineer dedicated to upholding high standards through rigorous testing and collaborative efforts. Passionate about ensuring product excellence and driving innovation." 
+        }
+    ]
+}
