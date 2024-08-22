@@ -3,6 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const db = require('../connection')
 const contentFile = require('../data/content.json');
+require('dotenv').config(); 
 
 const app = express();
 const port = 3000;
@@ -139,6 +140,34 @@ app.post('/api/send-wa-dg',bodyParser.json(), (req, res) => {
     // const phoneNumber = '6287778360195-1545882126@g.us';
     const phoneNumber = '6285951391878'
     const countryCode = '62';
+
+    const authHeader = req.headers['authorization'];
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
+        return res.status(401).json({
+            status: {
+                code: 401,
+                message: 'Unauthorized: No or invalid Authorization header provided',
+            },
+        });
+    }
+
+    // Decode the base64 encoded username:password from the Authorization header
+    const base64Credentials = authHeader.split(' ')[1];
+    const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+    const [username, password] = credentials.split(':');
+
+    // Replace these with your actual username and password
+    const validUsername = process.env.VALID_USERNAME;
+    const validPassword = process.env.VALID_PASSWORD;
+
+    if (username !== validUsername || password !== validPassword) {
+        return res.status(401).json({
+            status: {
+                code: 401,
+                message: 'Unauthorized: Invalid username or password',
+            },
+        });
+    }
 
     if (val_message) {
         const options = {
