@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const bodyParser = require('body-parser');
 const db = require('../connection')
 const contentFile = require('../data/content.json');
@@ -130,6 +131,67 @@ app.get('/api/content', (req, res) => {
     };
 
     res.status(200).json(respGetContent.Resp_get_content);
+})
+
+app.post('/api/send-wa-dg',bodyParser.json(), (req, res) => {
+    const { val_message } = req.body;
+    const token = 'zjdYxrNX9r+vd_@Hy8rj'; 
+    // const phoneNumber = '6287778360195-1545882126@g.us';
+    const phoneNumber = '6285951391878'
+    const countryCode = '62';
+
+    if (val_message) {
+        const options = {
+            method: 'post',
+            mode: 'cors',
+            url: 'https://api.fonnte.com/send',
+            headers: {
+            'Authorization': token
+            },
+            data: {
+                target: phoneNumber,
+                message: val_message,
+                countryCode: countryCode
+            }
+        };
+
+        axios.request(options)
+            .then(response => {
+                const respSendWA_success = {
+                    Resp_send_wa: {
+                        status: {
+                            code: 0,
+                            message: 'Success',
+                        },
+                        data: response.data.detail,
+                    },
+                };
+                res.status(200).json(respSendWA_success.Resp_send_wa);
+            })
+            .catch(error => {
+                const respSendWA_success = {
+                    Resp_send_wa: {
+                        status: {
+                            code: 0,
+                            message: 'Failed',
+                        },
+                        data: error,
+                    },
+                };
+                res.status(500).json(respSendWA_success.Resp_send_wa);
+            });
+    } else {
+        const respInvalid = {
+            Resp_invalid_parameter: {
+                Status: {
+                Code: 1,
+                Message: 'Invalid Request Body',
+                },
+            },
+        };
+    
+        res.status(400).json(respInvalid.Resp_invalid_parameter);
+    }
 })
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
