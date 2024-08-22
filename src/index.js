@@ -137,8 +137,8 @@ app.get('/api/content', (req, res) => {
 app.post('/api/send-wa-dg',bodyParser.json(), (req, res) => {
     const { val_message } = req.body;
     const token = 'zjdYxrNX9r+vd_@Hy8rj'; 
-    // const phoneNumber = '6287778360195-1545882126@g.us';
-    const phoneNumber = '6285951391878'
+    const phoneNumber = '6287778360195-1545882126@g.us';
+    // const phoneNumber = '6285951391878'
     const countryCode = '62';
 
     const authHeader = req.headers['authorization'];
