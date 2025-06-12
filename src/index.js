@@ -283,16 +283,23 @@ app.post('/api/send-wa-dg',bodyParser.json(), (req, res) => {
 
 const tls = require('tls');
 
-function getSSLExpiry(hostname, port = 443) {
+function getSSLExpiry(host) {
   return new Promise((resolve, reject) => {
-    const socket = tls.connect(port, hostname, { servername: hostname }, () => {
+    const socket = tls.connect(443, host, { servername: host }, () => {
       const cert = socket.getPeerCertificate();
+      if (cert && cert.valid_to) {
+        resolve(cert.valid_to); // formatnya: "Jun 19 23:59:59 2025 GMT"
+      } else {
+        reject(new Error("No certificate found"));
+      }
       socket.end();
-      if (!cert.valid_to) return reject('No valid_to field in certificate');
-      resolve(cert.valid_to);
     });
 
     socket.on('error', reject);
+    socket.setTimeout(5000, () => {
+      socket.destroy();
+      reject(new Error('Timeout'));
+    });
   });
 }
 
